@@ -10,14 +10,17 @@ import os
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common import env_checker
 from stable_baselines3 import PPO
+from stable_baselines3.common.evaluation import evaluate_policy
 
 import random
 import time
 
+CONFIG = '/home/sysadmin/code/doomReinforcementLearning/custom_senerios/deadly_corridor_custom_s1.cfg'
+
 # Create Vizdoom OpenAI Gym Environment
 class VizDoomGym(Env): 
     # Function that is called when we start the env
-    def __init__(self, render=False, config='/home/sysadmin/code/doomReinforcementLearning/github/ViZDoom/scenarios/deadly_corridor.cfg'): 
+    def __init__(self, render=False, config=CONFIG): 
       # Inherit from Env
         super().__init__()
         # Setup the game 
@@ -57,7 +60,7 @@ class VizDoomGym(Env):
             
             # Reward shaping
             game_variables = self.game.get_state().game_variables
-            health, damage_taken, hitcount, ammo = 100,20,10,2
+            health, damage_taken, hitcount, ammo = game_variables
             
             # Calculate reward deltas
             damage_taken_delta = -damage_taken + self.damage_taken
@@ -117,20 +120,38 @@ class TrainAndLoggingCallback(BaseCallback):
 
         return True
 
-
-env = VizDoomGym(render=True) 
-# NOTE Validate ENV configuration 
-# env_checker.check_env(env=VizDoomGym())
-
-
-CHECKPOINT_DIR = './train/train_corridor'
-LOG_DIR = './logs/log_corridor'
-
-callback = TrainAndLoggingCallback(check_freq=10000, save_path=CHECKPOINT_DIR)
+def check_env():
+    # # NOTE Validate ENV configuration 
+    return env_checker.check_env(env=VizDoomGym())
 
 
-# Agent & cretic
-model = PPO('CnnPolicy', env, tensorboard_log=LOG_DIR, verbose=1, learning_rate=0.00001, n_steps=8192)
+# env = VizDoomGym(render=True) 
 
-model.learn(total_timesteps=100000, callback=callback)
 
+# CHECKPOINT_DIR = './train/train_corridor'
+# LOG_DIR = './logs/log_corridor'
+
+# callback = TrainAndLoggingCallback(check_freq=10000, save_path=CHECKPOINT_DIR)
+
+
+# # Agent & cretic
+# model = PPO('CnnPolicy', env, tensorboard_log=LOG_DIR, verbose=1, learning_rate=0.00001, n_steps=8192)
+
+# model.learn(total_timesteps=100000, callback=callback)
+
+# Testing the model
+model = PPO.load('/home/sysadmin/code/doomReinforcementLearning/train/train_corridor/best_model_100000.zip')
+env = VizDoomGym(render=True, config=CONFIG)
+mean_reward, _ = evaluate_policy(model, env, n_eval_episodes=10)
+
+for episode in range(20): 
+    obs = env.reset()
+    done = False
+    total_reward = 0
+    while not done: 
+        action, _ = model.predict(obs)
+        obs, reward, done, info = env.step(action)
+        time.sleep(0.02)
+        total_reward += reward
+    print('Total Reward for episode {} is {}'.format(total_reward, episode))
+    time.sleep(2)
