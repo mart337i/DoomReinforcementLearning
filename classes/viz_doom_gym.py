@@ -19,7 +19,7 @@ class VizDoomGym(Env):
         self.game.load_config(config)
         
         # Render frame logic
-        if render == False: 
+        if render is False: 
             self.game.set_window_visible(False)
         else:
             self.game.set_window_visible(True)
@@ -34,8 +34,7 @@ class VizDoomGym(Env):
         # Game variables: HEALTH DAMAGE_TAKEN HITCOUNT SELECTED_WEAPON_AMMO
         self.damage_taken = 0
         self.hitcount = 0
-        self.ammo = 52 ## CHANGED
-        
+        self.ammo = 52
         
     # This is how we take a step in the environment
     def step(self, action):
