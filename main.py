@@ -33,7 +33,7 @@ def choose_option():
         case 1:
             ui.msg(f"You selected to {option}")
             title = 'Please select total_timesteps'
-            options = {'1000': 1000, '10.000': 10000, '100.000': 100000, '500.000': 500000, '1.000.000': 1000000}
+            options = {'1000': 1000, '10.000': 10000, '100.000': 100000, '500.000': 500000, '1.000.000': 1000000,'10.000.000' : 10000000 }
             option, index = pick(list(options.keys()), title)
             ui.timed_msg(f"The proces is starting now with {options.get(option)} total_timesteps")
 

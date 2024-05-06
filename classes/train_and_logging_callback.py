@@ -1,4 +1,5 @@
 from stable_baselines3.common.callbacks import BaseCallback
+from datetime import date
 import os 
 
 class TrainAndLoggingCallback(BaseCallback):
@@ -14,7 +15,7 @@ class TrainAndLoggingCallback(BaseCallback):
 
     def _on_step(self):
         if self.n_calls % self.check_freq == 0:
-            model_path = os.path.join(self.save_path, 'best_model_{}'.format(self.n_calls))
+            model_path = os.path.join(self.save_path, '{}_{}'.format(self.n_calls, date.today()))
             self.model.save(model_path)
 
         return True
