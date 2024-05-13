@@ -1,17 +1,23 @@
-# Doom Reinforcement Learning
+# Table of Contents
 
-## About this Project
-### Table of Contents
+## Doom Reinforcement Learning
+
+### About This Project
 1. [Introduction](#introduction)
-2. [Convolutional Neural Network (CNN)](#convolutional-neural-network-cnn)
-3. [Proximal Policy Optimization (PPO)](#proximal-policy-optimization-ppo)
-4. [The Setup](#the-setup)
-5. [The Result](#the-result)
-6. [Building ViZDoom from Source](#building-vizdoom-from-source)
-   - [Dependencies](#dependencies)
-     - [Linux](#linux)
-       - [apt-based Distros (Ubuntu, Debian, Linux Mint, etc.)](#apt-based-distros-ubuntu-debian-linux-mint-etc)
-   - [The Rest of the Dependencies](#the-rest-of-the-dependencies)
+2. [Why PPO with CNN?](#why-ppo-with-cnn)
+3. [Convolutional Neural Network (CNN)](#convolutional-neural-network-cnn)
+4. [Proximal Policy Optimization (PPO)](#proximal-policy-optimization-ppo)
+5. [The Setup](#the-setup)
+6. [Gym and VizDoom Setup](#gym-and-vizdoom-setup)
+7. [How to Train It?](#how-to-train-it)
+8. [How to Test It?](#how-to-test-it)
+9. [The Result](#the-result)
+10. [Building ViZDoom from Source](#building-vizdoom-from-source)
+    - [Dependencies](#dependencies)
+        - [Linux](#linux)
+            - [apt-based Distros (Ubuntu, Debian, Linux Mint, etc.)](#apt-based-distros-ubuntu-debian-linux-mint-etc)
+    - [The Rest of the Dependencies](#the-rest-of-the-dependencies)
+
 
 ### Introduction 
 This project was done for the class "17348 Machine Learning" and covers reinforcement learning using Proximal Policy Optimization (PPO) and a Convolutional Neural Network (CNN), also defined as a subset of machine learning. The CNN can also be classified as my ActorCriticPolicy.
@@ -157,7 +163,7 @@ class VizDoomGym(Env):
         self.game.close()
 ```
 so when we then want to configure and run the model all we have to to is the following:
- 
+
 ```python
     # Create the env and implementaion of env gym
     env = VizDoomGym(render=True, config=CONFIG)
